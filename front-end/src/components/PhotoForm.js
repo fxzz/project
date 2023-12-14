@@ -2,28 +2,31 @@ import { useState } from "react";
 import axios from "axios"; // npm install axios > import
 import { useHistory } from "react-router-dom";
 import { Modal, Button, Form } from "react-bootstrap";
+import { useDropzone } from "react-dropzone";
 
 const PhotoForm = () => {
   const [showModal, setShowModal] = useState(false);
-
+  const [image, setImage] = useState(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-
+  const history = useHistory();
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
+  const handleImage = (e) => {
+    setImage(e.target.files[0]);
+  };
 
   const onSubmit = () => {
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("image", image);
     axios
-      .post(
-        "http://localhost:8080/api/photos",
-        { title: title, content: content },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then(() => {})
+      .post("http://localhost:8080/api/photos", formData)
+      .then(() => {
+        handleClose();
+        history.push("/photo");
+      })
       .catch((error) => {
         // 에러 처리
         console.error("Error:", error);
@@ -66,10 +69,11 @@ const PhotoForm = () => {
             }}
           />
         </Modal.Body>
+        <Modal.Body>
+          <p>이미지 올리기:</p>
+          <input type="file" onChange={handleImage} />
+        </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleShow}>
-            이미지 올리기
-          </Button>
           <Button variant="primary" onClick={onSubmit}>
             등록
           </Button>
