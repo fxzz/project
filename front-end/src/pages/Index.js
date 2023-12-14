@@ -1,4 +1,5 @@
 import { Carousel } from "react-bootstrap";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const Index = () => {
   return (
@@ -14,7 +15,9 @@ const Index = () => {
                   공유할 수 있습니다.
                 </p>
               </div>
-              <button className="btn btn-dark">시작하기</button>
+              <Link to="/photo" className="btn btn-dark">
+                시작하기
+              </Link>
             </div>
           </div>
         </Carousel.Item>
@@ -28,53 +31,55 @@ const Index = () => {
                   순간을 나눠보세요.
                 </p>
               </div>
-              <button className="btn btn-dark">시작하기</button>
+              <Link to="/photo" className="btn btn-dark">
+                시작하기
+              </Link>
             </div>
           </div>
         </Carousel.Item>
       </Carousel>
       <div>
-        <div class="row mt-3">
-          <div class="col-md-4">
-            <div class="card">
-              <img src="/test3.jpg" class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">
+        <div className="row mt-3">
+          <div className="col-md-4">
+            <div className="card">
+              <img src="/test3.jpg" className="card-img-top" alt="..." />
+              <div className="card-body">
+                <h5 className="card-title">
                   <strong>휴식</strong>
                 </h5>
-                <p class="card-text">달콤한 휴식중!!!</p>
-                <a href="#" class="btn btn-primary">
+                <p className="card-text">달콤한 휴식중!!!</p>
+                <a href="#" className="btn btn-primary">
                   Go somewhere
                 </a>
               </div>
             </div>
           </div>
 
-          <div class="col-md-4">
-            <div class="card">
-              <img src="/test4.jpg" class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">
+          <div className="col-md-4">
+            <div className="card">
+              <img src="/test4.jpg" className="card-img-top" alt="..." />
+              <div className="card-body">
+                <h5 className="card-title">
                   <strong>한강 왔다</strong>
                 </h5>
-                <p class="card-text">날이 좋아서 좋다~</p>
-                <a href="#" class="btn btn-primary">
+                <p className="card-text">날이 좋아서 좋다~</p>
+                <a href="#" className="btn btn-primary">
                   Go somewhere
                 </a>
               </div>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="card">
-              <img src="/test5.jpg" class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">
+          <div className="col-md-4">
+            <div className="card">
+              <img src="/test5.jpg" className="card-img-top" alt="..." />
+              <div className="card-body">
+                <h5 className="card-title">
                   <strong>🌹화려한 장미</strong>
                 </h5>
-                <p class="card-text">
+                <p className="card-text">
                   우리집 정원 💖 #장미의나라 #꿈나라 #소소한행복
                 </p>
-                <a href="#" class="btn btn-primary">
+                <a href="#" className="btn btn-primary">
                   Go somewhere
                 </a>
               </div>

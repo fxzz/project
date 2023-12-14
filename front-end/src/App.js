@@ -4,6 +4,8 @@ import Index from "./pages/Index";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Signup from "./pages/Signup";
 import Footer from "./components/Footer";
+import Photo from "./pages/Photo";
+import PhotoForm from "./components/PhotoForm";
 
 function App() {
   return (
@@ -18,7 +20,10 @@ function App() {
             <Signup />
           </Route>
           <Route path="/photo" exact>
-            <Signup />
+            <Photo />
+          </Route>
+          <Route path="/PhotoForm" exact>
+            <PhotoForm />
           </Route>
         </Switch>
         <Footer />

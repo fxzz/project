@@ -15,7 +15,7 @@ const NavBar = () => {
         <li className="nav-item">
           <Link
             className="btn btn-outline-info border border-white bg-white"
-            to="#"
+            to="/photo"
           >
             Photo
           </Link>
