@@ -1,18 +1,19 @@
 package com.example.backend.photo;
 
 import com.example.backend.common.response.CommonResponse;
+import com.example.backend.photo.cursor.CursorDto;
+import com.example.backend.photo.cursor.CursorRequest;
+import com.example.backend.photo.cursor.CursorResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/api")
@@ -32,10 +33,12 @@ public class PhotoController {
     }
 
     @GetMapping("/photos")
-    public CommonResponse listAllPhotos() {
-        var photoList = photoService.listAllPhotos();
-        var response = PhotoDto.of(photoList);
-        return CommonResponse.success(response);
+    public ResponseEntity<CursorResponse<CursorDto>> getPhotoPage(@RequestParam(required = false) Long photoId,
+                                                                  @RequestParam int size) {
+        CursorRequest cursorRequest = new CursorRequest(photoId, size);
+        CursorResponse<CursorDto> page = photoService.getPage(cursorRequest);
+
+        return ResponseEntity.ok().body(page);
     }
 
     @GetMapping("/photos/{newFilename}")
@@ -43,4 +46,7 @@ public class PhotoController {
         Resource resource = new FileSystemResource(uploadPath + newFilename);
         return new ResponseEntity<>(resource, HttpStatus.OK);
     }
+
+
+
 }

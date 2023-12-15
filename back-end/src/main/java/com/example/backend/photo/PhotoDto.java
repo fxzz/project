@@ -29,15 +29,6 @@ public class PhotoDto implements Serializable {
 
 
 
-    private PhotoDto(Long photoId, String title, String content, String nickname, String newFilename, String filename, LocalDateTime createdAt) {
-        this.photoId = photoId;
-        this.title = title;
-        this.content = content;
-        this.nickname = nickname;
-        this.newFilename = newFilename;
-        this.filename = filename;
-        this.createdAt = createdAt;
-    }
     private PhotoDto(String title, String content, String nickname, String newFilename, String filename) {
         this.title = title;
         this.content = content;
@@ -46,15 +37,6 @@ public class PhotoDto implements Serializable {
         this.filename = filename;
     }
 
-    private PhotoDto(Long photoId, String title, String content, String nickname, String newFilename, String filename) {
-        this.photoId = photoId;
-        this.title = title;
-        this.content = content;
-        this.nickname = nickname;
-        this.newFilename = newFilename;
-        this.filename = filename;
-
-    }
 
     public static PhotoDto of(String title, String content, String newFilename, String filename) {
         return new PhotoDto(title, content, getName(), newFilename, filename);
@@ -62,15 +44,6 @@ public class PhotoDto implements Serializable {
 
     private static String getName() {
         return "익명";
-    }
-
-    public static List<PhotoDto> of(List<PhotoDto> photoList) {
-        List<PhotoDto> resultList = new ArrayList<>();
-        for (PhotoDto photo : photoList) {
-            resultList.add(new PhotoDto(photo.photoId, photo.getTitle(), photo.getContent(),
-                    photo.getNickname(), photo.getNewFilename(), photo.getFilename()));
-        }
-        return resultList;
     }
 
 
