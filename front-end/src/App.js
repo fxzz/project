@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Index from "./pages/Index";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import Signup from "./pages/Signup";
 import Footer from "./components/Footer";
 import Photo from "./pages/Photo";

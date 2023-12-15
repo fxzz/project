@@ -48,9 +48,19 @@ const Index = () => {
                   <strong>휴식</strong>
                 </h5>
                 <p className="card-text">달콤한 휴식중!!!</p>
-                <a href="#" className="btn btn-primary">
-                  Go somewhere
-                </a>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <span>하루</span>
+                  <span>
+                    <span style={{ marginRight: "10px" }}>
+                      <i className="bi bi-chat-dots ">8</i>
+                    </span>
+                    <span>
+                      <i className="bi bi-heart-fill text-danger">3</i>
+                    </span>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -63,9 +73,19 @@ const Index = () => {
                   <strong>한강 왔다</strong>
                 </h5>
                 <p className="card-text">날이 좋아서 좋다~</p>
-                <a href="#" className="btn btn-primary">
-                  Go somewhere
-                </a>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <span>나라짱</span>
+                  <span>
+                    <span style={{ marginRight: "10px" }}>
+                      <i className="bi bi-chat-dots ">3</i>
+                    </span>
+                    <span>
+                      <i className="bi bi-heart-fill text-danger">7</i>
+                    </span>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -79,9 +99,19 @@ const Index = () => {
                 <p className="card-text">
                   우리집 정원 💖 #장미의나라 #꿈나라 #소소한행복
                 </p>
-                <a href="#" className="btn btn-primary">
-                  Go somewhere
-                </a>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <span>서김추</span>
+                  <span>
+                    <span style={{ marginRight: "10px" }}>
+                      <i className="bi bi-chat-dots ">7</i>
+                    </span>
+                    <span>
+                      <i className="bi bi-heart-fill text-danger">9</i>
+                    </span>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
