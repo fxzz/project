@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,22 +25,24 @@ public class PhotoServiceImpl implements PhotoService {
     @Override
     public void registerPhotos(PhotoDto.RegisterPhotoRequest request) throws IOException {
 
-        String originalFilename = request.getImage().getOriginalFilename();
+        String originalFilename = request.getOriginalFilename();
 
         String fileExtension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
             if (FileExtensionUtils.isAllowedExtension(fileExtension)) {
-                String newFilename = UUID.randomUUID().toString() + "." + fileExtension;
+                String newFilename = UUID.randomUUID() + "." + fileExtension;
 
                 File upFile = new File(uploadPath, newFilename);
                 request.getImage().transferTo(upFile);
                 var photoDto= PhotoDto.of(request.getTitle(), request.getContent(), newFilename, originalFilename);
-                //insert
+
                 photoMapper.insertPhoto(photoDto);
-
-
         }
+    }
 
-
+    @Transactional(readOnly = true)
+    @Override
+    public List<PhotoDto> listAllPhotos() {
+        return photoMapper.selectAllPhotos();
     }
 
 

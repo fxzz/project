@@ -1,23 +1,43 @@
 package com.example.backend.photo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
-@Getter
-public class PhotoDto {
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+@Getter
+public class PhotoDto implements Serializable {
+
+    private Long photoId;
     private String title;
     private String content;
     private String nickname;
     private String newFilename;
     private String filename;
+    private LocalDateTime createdAt;
 
+
+
+    private PhotoDto(Long photoId, String title, String content, String nickname, String newFilename, String filename, LocalDateTime createdAt) {
+        this.photoId = photoId;
+        this.title = title;
+        this.content = content;
+        this.nickname = nickname;
+        this.newFilename = newFilename;
+        this.filename = filename;
+        this.createdAt = createdAt;
+    }
     private PhotoDto(String title, String content, String nickname, String newFilename, String filename) {
         this.title = title;
         this.content = content;
@@ -26,13 +46,34 @@ public class PhotoDto {
         this.filename = filename;
     }
 
-    public static PhotoDto of(String title, String content, String newFilename, String filename) {
-        return new PhotoDto(title, content, getNickname(), newFilename, filename);
+    private PhotoDto(Long photoId, String title, String content, String nickname, String newFilename, String filename) {
+        this.photoId = photoId;
+        this.title = title;
+        this.content = content;
+        this.nickname = nickname;
+        this.newFilename = newFilename;
+        this.filename = filename;
+
     }
 
-    private static String getNickname() {
-            return "익명";
+    public static PhotoDto of(String title, String content, String newFilename, String filename) {
+        return new PhotoDto(title, content, getName(), newFilename, filename);
+    }
+
+    private static String getName() {
+        return "익명";
+    }
+
+    public static List<PhotoDto> of(List<PhotoDto> photoList) {
+        List<PhotoDto> resultList = new ArrayList<>();
+        for (PhotoDto photo : photoList) {
+            resultList.add(new PhotoDto(photo.photoId, photo.getTitle(), photo.getContent(),
+                    photo.getNickname(), photo.getNewFilename(), photo.getFilename()));
         }
+        return resultList;
+    }
+
+
 
 
     @Getter
@@ -47,5 +88,10 @@ public class PhotoDto {
 
         @NotNull(message = "image 는 필수값입니다")
         private MultipartFile image;
+
+
+        public String getOriginalFilename() {
+            return image.getOriginalFilename();
+        }
     }
 }

@@ -8,4 +8,10 @@
         VALUES (#{title}, #{content}, #{nickname}, #{newFilename}, #{filename})
     </insert>
 
+    <select id="selectAllPhotos" resultType="com.example.backend.photo.PhotoDto">
+        SELECT photoId, title, content, nickname, newFilename, filename, createdat
+        FROM photo
+        ORDER BY createdat DESC
+    </select>
+
 </mapper>
