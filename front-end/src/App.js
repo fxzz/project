@@ -5,8 +5,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Signup from "./pages/Signup";
 import Footer from "./components/Footer";
-import Photo from "./pages/Photo";
+
 import PhotoForm from "./components/PhotoForm";
+import CusPhoto from "./pages/CusPhoto";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
             <Signup />
           </Route>
           <Route path="/photo" exact>
-            <Photo />
+            <CusPhoto />
           </Route>
           <Route path="/PhotoForm" exact>
             <PhotoForm />
