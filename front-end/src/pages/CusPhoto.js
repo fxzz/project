@@ -8,6 +8,13 @@ const CusPhoto = () => {
   const [error, setError] = useState(null);
   const [nextCursorRequest, setNextCursorRequest] = useState(null);
 
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + "...";
+    }
+    return text;
+  };
+
   const fetchData = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/photos", {
@@ -20,11 +27,11 @@ const CusPhoto = () => {
       });
 
       // API 응답이 유효하고 content가 배열인 경우에만 처리합니다.
-      if (response.data && Array.isArray(response.data.content)) {
+      if (response.data && Array.isArray(response.data.data.content)) {
         // setPhotoData 함수를 사용하여 현재 데이터를 업데이트합니다.
         setPhotoData((prevData) => {
           // 중복되지 않은 데이터를 필터링합니다.
-          const uniqueData = response.data.content.filter(
+          const uniqueData = response.data.data.content.filter(
             (newPhoto) =>
               // 현재 데이터에 존재하지 않는 경우만 필터링합니다.
               !prevData.some(
@@ -35,7 +42,7 @@ const CusPhoto = () => {
           return [...prevData, ...uniqueData];
         });
 
-        setNextCursorRequest(response.data.nextCursorRequest);
+        setNextCursorRequest(response.data.data.nextCursorRequest);
       } else {
         setError("Invalid response structure");
       }
@@ -66,19 +73,19 @@ const CusPhoto = () => {
                 />
                 <div className="card-body">
                   <h5 className="card-title">
-                    <strong>{photo.title}</strong>
+                    <strong>{truncateText(photo.title, 15)}</strong>
                   </h5>
-                  <p className="card-text">{photo.content}</p>
+                  <p className="card-text">{truncateText(photo.content, 19)}</p>
                   <div
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
                     <span>{photo.nickname}</span>
                     <span>
                       <span style={{ marginRight: "10px" }}>
-                        <i className="bi bi-chat-dots ">5</i>
+                        <i className="bi bi-chat-dots ">0</i>
                       </span>
                       <span>
-                        <i className="bi bi-heart-fill text-danger">7</i>
+                        <i className="bi bi-heart-fill text-danger">0</i>
                       </span>
                     </span>
                   </div>
@@ -96,7 +103,7 @@ const CusPhoto = () => {
         </div>
       ) : (
         <div className="text-center mt-3">
-          <p>사진이 더 이상 없어요.</p>
+          <p>사용자님들이 사진을 올리고 있어요.</p>
         </div>
       )}
     </div>

@@ -8,8 +8,12 @@ const PhotoForm = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
+  const [validationTitle, setValidationTitle] = useState(null);
+  const [validationContent, setValidationContent] = useState(null);
+  const [validationImage, setValidationImage] = useState(null);
+
   const handleShow = () => setShowModal(true);
-  const handleClose = () => setShowModal(false);
+  const handleClose = () => window.location.replace("/photo");
   const handleImage = (e) => {
     setImage(e.target.files[0]);
   };
@@ -18,16 +22,39 @@ const PhotoForm = () => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("content", content);
-    formData.append("image", image);
+    if (image !== null) {
+      formData.append("image", image);
+    }
     axios
-      .post("http://localhost:8080/api/photos", formData)
+      .post("http://localhost:8080/api/photos", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then(() => {
-        handleClose();
-
         window.location.replace("/photo");
       })
       .catch((error) => {
-        console.error("Error:", error);
+        if (error.response) {
+          const errors = error.response.data.errors;
+
+          errors.forEach((err) => {
+            switch (err.field) {
+              case "title":
+                setValidationTitle(err.defaultMessage);
+                break;
+              case "content":
+                setValidationContent(err.defaultMessage);
+                break;
+              case "image":
+                setValidationImage(err.defaultMessage);
+                break;
+
+              default:
+                break;
+            }
+          });
+        }
       });
   };
   return (
@@ -46,6 +73,7 @@ const PhotoForm = () => {
           <p>제목:</p>
           <Form.Control
             type="text"
+            placeholder={validationTitle}
             onChange={(e) => {
               setTitle(e.target.value);
             }}
@@ -56,6 +84,7 @@ const PhotoForm = () => {
           <Form.Control
             as="textarea"
             rows={3}
+            placeholder={validationContent}
             onChange={(e) => {
               setContent(e.target.value);
             }}
@@ -64,8 +93,13 @@ const PhotoForm = () => {
         <Modal.Body>
           <p>이미지 올리기:</p>
           <input type="file" onChange={handleImage} />
+          {validationImage && <p style={{ color: "red" }}>{validationImage}</p>}
         </Modal.Body>
-        <Modal.Footer>
+
+        <Modal.Footer
+          style={{ display: "flex", justifyContent: "space-between" }}
+        >
+          <strong>특수문자는 사용 불가능합니다.</strong>
           <Button variant="primary" onClick={onSubmit}>
             등록
           </Button>
