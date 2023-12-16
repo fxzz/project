@@ -1,23 +1,20 @@
 package com.example.backend.photo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Getter
-public class PhotoDto implements Serializable {
+public class PhotoDto {
 
     private Long photoId;
     private String title;
@@ -53,18 +50,24 @@ public class PhotoDto implements Serializable {
     @Setter
     @ToString
     public static class RegisterPhotoRequest {
-        @NotNull(message = "title 는 필수값입니다")
+
+        @NotBlank(message = "제목은 필수입니다")
+        @Pattern(regexp = "^[가-힣ㄱ-ㅎㅏ-ㅣA-Za-z0-9]{1,}$", message = "제목은 필수입니다")
         private String title;
 
-        @NotBlank(message = "content 는 필수값입니다")
+        @Pattern(regexp = "^[가-힣ㄱ-ㅎㅏ-ㅣA-Za-z0-9]{1,}$", message = "내용은 필수입니다")
+        @NotBlank(message = "내용은 필수입니다")
         private String content;
 
-        @NotNull(message = "image 는 필수값입니다")
+
+        @NotNull(message = "이미지는 필수입니다")
         private MultipartFile image;
 
 
         public String getOriginalFilename() {
             return image.getOriginalFilename();
         }
+
+
     }
 }

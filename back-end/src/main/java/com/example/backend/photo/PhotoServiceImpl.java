@@ -1,10 +1,12 @@
 package com.example.backend.photo;
 
+import com.example.backend.common.exception.UploadException;
 import com.example.backend.common.util.FileExtensionUtils;
 import com.example.backend.photo.cursor.CursorDto;
 import com.example.backend.photo.cursor.CursorRequest;
 import com.example.backend.photo.cursor.CursorResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PhotoServiceImpl implements PhotoService {
@@ -28,35 +31,37 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Transactional
     @Override
-    public void registerPhotos(PhotoDto.RegisterPhotoRequest request) throws IOException {
+    public void registerPhotos(PhotoDto.RegisterPhotoRequest request) {
+
 
         String originalFilename = request.getOriginalFilename();
-
         String fileExtension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+
             if (FileExtensionUtils.isAllowedExtension(fileExtension)) {
                 String newFilename = UUID.randomUUID() + "." + fileExtension;
 
                 File upFile = new File(uploadPath, newFilename);
-                request.getImage().transferTo(upFile);
-                var photoDto= PhotoDto.of(request.getTitle(), request.getContent(), newFilename, originalFilename);
 
+                try {
+                    request.getImage().transferTo(upFile);
+                } catch (IOException e) {
+                    log.error("Error transferring image:", e);
+                    throw new UploadException("업로드 중에 오류가 발생했습니다. 다시 시도해주세요.");
+                }
+                var photoDto= PhotoDto.of(request.getTitle(), request.getContent(), newFilename, originalFilename);
                 photoMapper.insertPhoto(photoDto);
         }
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public List<PhotoDto> listAllPhotos() {
-        return photoMapper.selectAllPhotos();
-    }
-
-
 
 
 
     @Transactional(readOnly = true)
     @Override
-    public CursorResponse<CursorDto> getPage(CursorRequest cursorRequest) {
+    public CursorResponse<CursorDto> getPage(Long photoId, int size) {
+
+        CursorRequest cursorRequest = new CursorRequest(photoId, size);
+
         List<CursorDto> cursorDtos;
 
         if (cursorRequest.hasPhotoId()) {
