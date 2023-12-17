@@ -9,7 +9,7 @@ import java.util.Map;
 @Mapper
 public interface PhotoMapper {
    void insertPhoto(PhotoDto photoDto);
-   List<PhotoDto> selectAllPhotos();
+
 
    List<CursorDto> selectFirstPage(Map map);
    List<CursorDto> selectNextPage(Map map);
