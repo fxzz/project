@@ -1,9 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
 import { Modal, Button, Form } from "react-bootstrap";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const PhotoForm = () => {
   const [showModal, setShowModal] = useState(false);
+  const [captchaValue, setCaptchaValue] = useState("");
   const [image, setImage] = useState(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -18,44 +20,53 @@ const PhotoForm = () => {
     setImage(e.target.files[0]);
   };
 
+  const handleCaptchaChange = (value) => {
+    setCaptchaValue(value || "");
+  };
+
   const onSubmit = () => {
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("content", content);
-    if (image !== null) {
-      formData.append("image", image);
+    // 구글캡차
+    if (captchaValue) {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("content", content);
+      if (image !== null) {
+        formData.append("image", image);
+      }
+      axios
+        .post("http://localhost:8080/api/photos", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(() => {
+          window.location.replace("/photo");
+        })
+        .catch((error) => {
+          if (error.response) {
+            const errors = error.response.data.errors;
+
+            errors.forEach((err) => {
+              switch (err.field) {
+                case "title":
+                  setValidationTitle(err.defaultMessage);
+                  break;
+                case "content":
+                  setValidationContent(err.defaultMessage);
+                  break;
+                case "image":
+                  setValidationImage(err.defaultMessage);
+                  break;
+
+                default:
+                  break;
+              }
+            });
+          }
+        });
+    } else {
+      alert("reCAPTCHA를 통과해야 합니다.");
     }
-    axios
-      .post("http://localhost:8080/api/photos", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then(() => {
-        window.location.replace("/photo");
-      })
-      .catch((error) => {
-        if (error.response) {
-          const errors = error.response.data.errors;
-
-          errors.forEach((err) => {
-            switch (err.field) {
-              case "title":
-                setValidationTitle(err.defaultMessage);
-                break;
-              case "content":
-                setValidationContent(err.defaultMessage);
-                break;
-              case "image":
-                setValidationImage(err.defaultMessage);
-                break;
-
-              default:
-                break;
-            }
-          });
-        }
-      });
   };
   return (
     <div>
@@ -94,6 +105,12 @@ const PhotoForm = () => {
           <p>이미지 올리기:</p>
           <input type="file" onChange={handleImage} />
           {validationImage && <p style={{ color: "red" }}>{validationImage}</p>}
+        </Modal.Body>
+        <Modal.Body>
+          <ReCAPTCHA
+            sitekey="6LdVZkIoAAAAAHqqBx2hHpwkBIKn_SIVrdrMH25n"
+            onChange={handleCaptchaChange}
+          />
         </Modal.Body>
 
         <Modal.Footer
