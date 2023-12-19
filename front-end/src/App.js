@@ -3,7 +3,7 @@ import NavBar from "./components/NavBar";
 import Index from "./pages/Index";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import Signup from "./pages/Signup";
+import SignUp from "./pages/SignUp";
 import Footer from "./components/Footer";
 
 import PhotoForm from "./components/PhotoForm";
@@ -18,8 +18,8 @@ function App() {
           <Route path="/" exact>
             <Index />
           </Route>
-          <Route path="/signup" exact>
-            <Signup />
+          <Route path="/SignUp" exact>
+            <SignUp />
           </Route>
           <Route path="/photo" exact>
             <CusPhoto />

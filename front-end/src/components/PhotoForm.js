@@ -116,7 +116,7 @@ const PhotoForm = () => {
         <Modal.Footer
           style={{ display: "flex", justifyContent: "space-between" }}
         >
-          <strong>특수문자는 사용 불가능합니다.</strong>
+          <strong>일부 특수 문자는 사용 불가능합니다.</strong>
           <Button variant="primary" onClick={onSubmit}>
             등록
           </Button>
