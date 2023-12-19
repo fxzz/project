@@ -25,13 +25,11 @@ public class PhotoServiceImpl implements PhotoService {
 
     private final PhotoMapper photoMapper;
 
-    @Value("${uploadPath}")
-    private String uploadPath;
 
 
     @Transactional
     @Override
-    public void registerPhotos(PhotoDto.RegisterPhotoRequest request) {
+    public void registerPhotos(PhotoDto.RegisterPhotoRequest request, String uploadPath) {
 
 
         String originalFilename = request.getOriginalFilename();
