@@ -41,11 +41,16 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/api/**").permitAll() //TODO 나중에 추가
                                 .anyRequest().authenticated())
+
                 .httpBasic(HttpBasicConfigurer::disable)
+
                 .formLogin(AbstractHttpConfigurer::disable)
+
                 .cors(cors -> cors.configurationSource(configurationSource()))
+
                 .headers(authorize -> authorize
                         .frameOptions(frameOptions -> frameOptions.disable()))
+
                 // requestMatchers 에 걸리면 CustomResponseUtil.unAuthentication(response) 응답을 보냄
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint((request, response, authException) -> {

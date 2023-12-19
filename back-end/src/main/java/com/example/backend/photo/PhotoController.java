@@ -33,7 +33,6 @@ public class PhotoController {
 
     @PostMapping("/photos")
     public CommonResponse registerPhotos(@Valid PhotoDto.RegisterPhotoRequest request) {
-
         photoService.registerPhotos(request, uploadPath);
         return CommonResponse.success("OK");
     }
