@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import { Modal, Button, Form } from "react-bootstrap";
 import ReCAPTCHA from "react-google-recaptcha";
+import { useHistory } from "react-router-dom";
 
 const PhotoForm = () => {
   const [showModal, setShowModal] = useState(false);
@@ -14,7 +16,13 @@ const PhotoForm = () => {
   const [validationContent, setValidationContent] = useState(null);
   const [validationImage, setValidationImage] = useState(null);
 
-  const handleShow = () => setShowModal(true);
+  const handleShow = () => {
+    if (!accessToken) {
+      history.push("/Login");
+    } else {
+      setShowModal(true);
+    }
+  };
   const handleClose = () => window.location.replace("/photo");
   const handleImage = (e) => {
     setImage(e.target.files[0]);
@@ -23,6 +31,9 @@ const PhotoForm = () => {
   const handleCaptchaChange = (value) => {
     setCaptchaValue(value || "");
   };
+
+  const accessToken = localStorage.getItem("accessToken");
+  const history = useHistory();
 
   const onSubmit = () => {
     // 구글캡차
@@ -37,6 +48,7 @@ const PhotoForm = () => {
         .post("http://localhost:8080/api/photos", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${accessToken}`,
           },
         })
         .then(() => {

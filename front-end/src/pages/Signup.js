@@ -2,8 +2,10 @@ import { useState } from "react";
 import axios from "axios";
 import { Card, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const SignUp = () => {
+  const history = useHistory();
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -19,7 +21,9 @@ const SignUp = () => {
 
     axios
       .post("http://localhost:8080/api/users", formData)
-      .then(() => {})
+      .then((response) => {
+        history.push("/Login");
+      })
       .catch((error) => {
         if (error.response) {
           const errorMessages = error.response.data.errors;

@@ -4,6 +4,7 @@ import PhotoForm from "../components/PhotoForm";
 import axios from "axios";
 
 const CusPhoto = () => {
+  const accessToken = localStorage.getItem("accessToken");
   const [photoData, setPhotoData] = useState([]);
   const [error, setError] = useState(null);
   const [nextCursorRequest, setNextCursorRequest] = useState(null);
@@ -55,9 +56,6 @@ const CusPhoto = () => {
     fetchData();
   }, []);
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
   return (
     <div>
       <PhotoForm />

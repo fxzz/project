@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import PhotoForm from "./components/PhotoForm";
 import CusPhoto from "./pages/CusPhoto";
 import Login from "./pages/Login";
+import MyPage from "./pages/MyPage";
 
 function App() {
   return (
@@ -30,6 +31,9 @@ function App() {
           </Route>
           <Route path="/Login" exact>
             <Login />
+          </Route>
+          <Route path="/MyPage" exact>
+            <MyPage />
           </Route>
         </Switch>
         <Footer />
