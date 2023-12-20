@@ -1,22 +1,28 @@
 package com.example.backend.config;
 
+import com.example.backend.account.AccountService;
 import com.example.backend.common.response.CommonResponse;
 import com.example.backend.common.response.ErrorCode;
 import com.example.backend.common.util.CustomResponseUtil;
+import com.example.backend.config.auth.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -27,6 +33,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final UserDetailsService userDetailsService;
+
+    @Value("${jwt.token.secret}")
+    private String secretKey;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -39,9 +49,10 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
-                                .requestMatchers("/api/**").permitAll() //TODO 나중에 추가
+                                .requestMatchers("/api/", "/api/login", "/api/users", "/api/photos/**").permitAll() //TODO 나중에 추가
                                 .requestMatchers("/error/**").permitAll()
                                 .requestMatchers("/favicon.ico").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/photos").authenticated()
                                 .anyRequest().authenticated())
 
                 .httpBasic(HttpBasicConfigurer::disable)
@@ -58,6 +69,7 @@ public class SecurityConfig {
                         .authenticationEntryPoint((request, response, authException) -> {
                             CustomResponseUtil.unAuthentication(response);
                         }))
+                .addFilterBefore(new JwtFilter(userDetailsService, secretKey), UsernamePasswordAuthenticationFilter.class);
         ;
 
         return http.build();
