@@ -9,6 +9,9 @@ CREATE TABLE photo
     createdat   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+/*
+TODO 나중에 username, email, nickname 에 UNIQUE 추가
+*/
 CREATE TABLE account
 (
     accountId BIGINT PRIMARY KEY AUTO_INCREMENT,

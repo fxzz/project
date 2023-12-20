@@ -40,6 +40,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
                                 .requestMatchers("/api/**").permitAll() //TODO 나중에 추가
+                                .requestMatchers("/error/**").permitAll()
+                                .requestMatchers("/favicon.ico").permitAll()
                                 .anyRequest().authenticated())
 
                 .httpBasic(HttpBasicConfigurer::disable)

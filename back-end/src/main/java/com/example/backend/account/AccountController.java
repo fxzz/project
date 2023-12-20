@@ -1,8 +1,9 @@
 package com.example.backend.account;
 
 
+
+
 import com.example.backend.common.response.CommonResponse;
-import com.example.backend.photo.PhotoDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,9 +17,11 @@ public class AccountController {
 
     private final AccountService accountService;
 
+
     @PostMapping("/users")
-    public CommonResponse registerAccounts(@Valid AccountDto.RegisterAccountRequest request) {
-        var accountDto = AccountDto.of(request);
+    public CommonResponse registerAccounts(@Valid AccountDto.RegisterAccountRequest registerAccountReq) {
+
+        var accountDto = AccountDto.of(registerAccountReq);
         accountService.registerAccounts(accountDto);
         return CommonResponse.success("OK");
     }

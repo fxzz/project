@@ -8,6 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -55,6 +58,8 @@ class AccountControllerTest {
         assertEquals(EXPECTED_COUNT_ZERO, emailCount);
     }
 
+
+
     private Integer performSignUpAndVerify(String username, String password, String email) throws Exception {
         mvc.perform(post("/api/users")
                 .param("username", username)
@@ -63,4 +68,6 @@ class AccountControllerTest {
         );
         return accountMapper.selectEmailCount(email);
     }
+
+
 }

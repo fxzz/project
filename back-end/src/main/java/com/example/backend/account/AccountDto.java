@@ -1,12 +1,14 @@
 package com.example.backend.account;
 
+import com.example.backend.account.validator.UniqueEmail;
+import com.example.backend.account.validator.UniqueUsername;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
+
+
 
 import java.time.LocalDateTime;
 
@@ -22,6 +24,9 @@ public class AccountDto {
     private LocalDateTime createdAt;
 
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     private AccountDto(String username, String password, String email, String nickname, Role role) {
         this.username = username;
@@ -45,14 +50,18 @@ public class AccountDto {
     @ToString
     public static class RegisterAccountRequest {
 
-        @NotBlank(message = "아이디는 필수입니다 3~20자")
-        @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9_-]{3,20}$", message = "아이디는 필수입니다 3~20자")
+        // TODO 정규식 나중에 변경
+
+        @UniqueUsername
+        @NotBlank(message = "아이디는 필수입니다 영문 숫자 3~20자")
+        @Pattern(regexp = "^[A-Za-z0-9]{3,20}$", message = "아이디는 필수입니다 3~20자")
         private String username;
 
         @NotBlank(message = "패스워드는 필수입니다 3~50자")
         @Length(min = 3, max = 50, message = "패스워드는 필수입니다 3~50자")
         private String password;
 
+        @UniqueEmail
         @Email(message = "이메일은 필수입니다.")
         @NotBlank(message = "이메일은 필수입니다.")
         private String email;
