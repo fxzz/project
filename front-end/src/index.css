@@ -45,3 +45,8 @@ code {
 .card-img-top {
   height: 430px;
 }
+
+#link {
+  text-decoration: none;
+  font-size: 14px;
+}

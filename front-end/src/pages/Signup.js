@@ -7,7 +7,10 @@ const SignUp = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-
+  const [validationId, setValidationId] = useState(null);
+  const [validationPassword, setValidationPassword] = useState(null);
+  const [validationEmail, setValidationEmail] = useState(null);
+  //TODO 나중에 validation 상태값 유지하는 문제 수정
   const onSubmit = () => {
     const formData = new FormData();
     formData.append("username", id);
@@ -17,7 +20,30 @@ const SignUp = () => {
     axios
       .post("http://localhost:8080/api/users", formData)
       .then(() => {})
-      .catch((error) => {});
+      .catch((error) => {
+        if (error.response) {
+          const errorMessages = error.response.data.errors;
+
+          errorMessages.forEach((error) => {
+            const fieldName = error.field;
+            const errorMessage = error.defaultMessage;
+
+            switch (fieldName) {
+              case "username":
+                setValidationId(errorMessage);
+                break;
+              case "password":
+                setValidationPassword(errorMessage);
+                break;
+              case "email":
+                setValidationEmail(errorMessage);
+                break;
+              default:
+                break;
+            }
+          });
+        }
+      });
   };
   return (
     <div>
@@ -39,9 +65,9 @@ const SignUp = () => {
                     setId(e.target.value);
                   }}
                 />
-                {/* <Form.Text className="text-muted">
-                  에러 있을때 에러메세지 보여주기
-                </Form.Text> */}
+                <Form.Text className="text-muted">
+                  {validationId != null && validationId}
+                </Form.Text>
               </Form.Group>
 
               <Form.Group controlId="formBasicPassword" className="mb-4">
@@ -53,9 +79,9 @@ const SignUp = () => {
                     setPassword(e.target.value);
                   }}
                 />
-                {/* <Form.Text className="text-muted">
-                  에러 있을때 에러메세지 보여주기
-                </Form.Text> */}
+                <Form.Text className="text-muted">
+                  {validationPassword != null && validationPassword}
+                </Form.Text>
               </Form.Group>
 
               <Form.Group controlId="formBasicEmail" className="mb-4">
@@ -67,23 +93,29 @@ const SignUp = () => {
                     setEmail(e.target.value);
                   }}
                 />
-                {/* <Form.Text className="text-muted">
-                  에러 있을때 에러메세지 보여주기
-                </Form.Text> */}
+                <Form.Text className="text-muted">
+                  {validationEmail != null && validationEmail}
+                </Form.Text>
               </Form.Group>
 
               <div className="d-flex justify-content-center mb-3">
                 <button
-                  onClick={onSubmit}
-                  type="submit"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onSubmit();
+                  }}
                   className="btn btn-primary"
                 >
-                  Submit
+                  가입하기
                 </button>
               </div>
             </Form>
             <div>
-              <Link to="" className="d-flex justify-content-center">
+              <Link
+                id="link"
+                to="/Login"
+                className="d-flex justify-content-center"
+              >
                 이미 계정이 있으신가요?
               </Link>
             </div>
