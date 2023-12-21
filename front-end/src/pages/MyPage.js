@@ -2,6 +2,7 @@ import { useHistory } from "react-router-dom";
 import Avvvatars from "avvvatars-react"; // npm install avvvatars-react
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const MyPage = () => {
   const [nickname, setNickname] = useState("");
@@ -37,11 +38,34 @@ const MyPage = () => {
 
   return (
     <div className="row">
+      <div className="col-1"></div>
       <div className="col-3">
-        <Avvvatars value={nickname} size={130} />
-        <div>{nickname}</div>
+        <div style={{ marginBottom: "120px" }}></div>
+        <div>
+          <Avvvatars value={nickname} size={110} />
+        </div>
+        <div id="page">
+          <div className="mt-4">
+            <strong>{nickname}</strong>
+          </div>
+        </div>
+        <div id="buttonPage">
+          <div>
+            <Link className="myPageLink">내가 쓴 글</Link>
+          </div>
+          <div className="mt-4">
+            <Link className="myPageLink">채팅 리스트</Link>
+          </div>
+          <div className="mt-4">
+            <Link className="myPageLink">설정</Link>
+          </div>
+        </div>
       </div>
-      <div className="col-9">col-4</div>
+
+      <div className="col-8">
+        <div style={{ marginBottom: "120px" }}></div>
+        <h4>설정</h4>
+      </div>
     </div>
   );
 };

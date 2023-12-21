@@ -50,3 +50,17 @@ code {
   text-decoration: none;
   font-size: 14px;
 }
+
+#page {
+  margin-left: 35px;
+}
+
+#buttonPage {
+  margin-top: 100px;
+}
+
+.myPageLink {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}

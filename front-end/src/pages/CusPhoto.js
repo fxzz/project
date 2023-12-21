@@ -1,9 +1,9 @@
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useEffect, useState } from "react";
 import PhotoForm from "../components/PhotoForm";
 import axios from "axios";
 
-const CusPhoto = () => {
+const CusPhoto = ({ photo }) => {
   const accessToken = localStorage.getItem("accessToken");
   const [photoData, setPhotoData] = useState([]);
   const [error, setError] = useState(null);
@@ -52,6 +52,12 @@ const CusPhoto = () => {
     }
   };
 
+  const history = useHistory();
+
+  const goToDetailsPage = (photoId) => {
+    history.push(`/photos/${photoId}`);
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -63,9 +69,12 @@ const CusPhoto = () => {
         <div className="row mt-3">
           {photoData.map((photo) => (
             <div key={photo.photoId} className="col-md-4 mb-3">
-              <div className="card">
+              <div
+                className="card"
+                onClick={() => goToDetailsPage(photo.photoId)}
+              >
                 <img
-                  src={`http://localhost:8080/api/photos/${photo.newFilename}`}
+                  src={`http://localhost:8080/api/file/${photo.newFilename}`}
                   className="card-img-top"
                   alt="..."
                 />

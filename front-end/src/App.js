@@ -10,6 +10,7 @@ import PhotoForm from "./components/PhotoForm";
 import CusPhoto from "./pages/CusPhoto";
 import Login from "./pages/Login";
 import MyPage from "./pages/MyPage";
+import DetailsPhoto from "./pages/DetailsPhoto";
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
           <Route path="/SignUp" exact>
             <SignUp />
           </Route>
-          <Route path="/photo" exact>
+          <Route path="/photos" exact>
             <CusPhoto />
           </Route>
           <Route path="/PhotoForm" exact>
@@ -34,6 +35,9 @@ function App() {
           </Route>
           <Route path="/MyPage" exact>
             <MyPage />
+          </Route>
+          <Route path="/photos/:photoId" exact>
+            <DetailsPhoto />
           </Route>
         </Switch>
         <Footer />
