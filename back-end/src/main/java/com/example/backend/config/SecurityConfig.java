@@ -1,28 +1,28 @@
 package com.example.backend.config;
 
-import com.example.backend.account.AccountService;
-import com.example.backend.common.response.CommonResponse;
-import com.example.backend.common.response.ErrorCode;
+
 import com.example.backend.common.util.CustomResponseUtil;
-import com.example.backend.config.auth.UserDetailsServiceImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletResponse;
+
+
+import com.example.backend.config.jwt.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
+
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -33,10 +33,22 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final UserDetailsService userDetailsService;
 
-    @Value("${jwt.token.secret}")
-    private String secretKey;
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    public class CustomSecurityFilterManager extends AbstractHttpConfigurer<CustomSecurityFilterManager, HttpSecurity> {
+        @Override
+        public void configure(HttpSecurity builder) throws Exception {
+            AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
+            builder.addFilter(new JwtAuthorizationFilter(authenticationManager));
+            // 시큐리티 관련 필터
+            super.configure(builder);
+        }
+    }
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -46,6 +58,7 @@ public class SecurityConfig {
                 .sessionManagement((sessionManagement) ->
                         sessionManagement
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
 
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
@@ -69,7 +82,7 @@ public class SecurityConfig {
                         .authenticationEntryPoint((request, response, authException) -> {
                             CustomResponseUtil.unAuthentication(response);
                         }))
-                .addFilterBefore(new JwtFilter(userDetailsService, secretKey), UsernamePasswordAuthenticationFilter.class);
+                .apply(new CustomSecurityFilterManager())
         ;
 
         return http.build();
@@ -89,7 +102,7 @@ public class SecurityConfig {
         corsConfiguration.addAllowedMethod("*"); //GET, POST, PUT, DELETE, Javascript 허용
         corsConfiguration.addAllowedOriginPattern("*"); //TODO 나중에 리엑트 IP만 허용으로 교체
         corsConfiguration.setAllowCredentials(true); // 클라이언트에서 쿠키 요청 허용
-
+        corsConfiguration.addExposedHeader("Authorization");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;

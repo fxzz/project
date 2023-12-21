@@ -2,7 +2,8 @@ package com.example.backend.photo;
 
 import com.example.backend.common.response.CommonResponse;
 
-import com.example.backend.config.auth.UserAccount;
+
+import com.example.backend.config.auth.AccountDetails;
 import com.example.backend.photo.cursor.CursorDto;
 
 import com.example.backend.photo.cursor.CursorResponse;
@@ -34,9 +35,11 @@ public class PhotoController {
 
 
     @PostMapping("/photos")
-    public CommonResponse registerPhotos(@Valid PhotoDto.RegisterPhotoRequest request) {
-        System.out.println("넥넴");
+    public CommonResponse registerPhotos(@Valid PhotoDto.RegisterPhotoRequest request, @AuthenticationPrincipal AccountDetails accountDetails) {
         photoService.registerPhotos(request, uploadPath);
+        System.out.println(accountDetails.getAccount().getAccountId() + " " + accountDetails.getAccount().getNickname()
+        +" "+ accountDetails.getAccount().getRole())
+        ;
         return CommonResponse.success("OK");
     }
 

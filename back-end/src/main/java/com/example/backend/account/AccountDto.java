@@ -23,6 +23,8 @@ public class AccountDto {
     private Role role;
     private LocalDateTime createdAt;
 
+    public AccountDto() {
+    }
 
     public void setPassword(String password) {
         this.password = password;
@@ -31,6 +33,12 @@ public class AccountDto {
     private AccountDto(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public AccountDto(Long accountId, String role, String nickname) {
+        this.accountId = accountId;
+        this.role = Role.valueOf(role);
+        this.nickname = nickname;
     }
 
     private AccountDto(String username, String password, String email, String nickname, Role role) {

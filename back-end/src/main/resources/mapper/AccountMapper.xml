@@ -8,7 +8,7 @@
         VALUES (#{username}, #{password}, #{email}, #{nickname}, #{role})
     </insert>
 
-    <select id="selectUser" parameterType="String" resultType="com.example.backend.account.AccountDto">
+    <select id="selectAccount" parameterType="String" resultType="com.example.backend.account.AccountDto">
         SELECT accountId, username, password, email, nickname, role FROM account WHERE username = #{username}
     </select>
 

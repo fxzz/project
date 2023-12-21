@@ -10,5 +10,5 @@ public interface AccountMapper {
     Integer selectEmailCount(String email);
     Integer selectNicknameCount(String nickname);
     AccountDto selectUsername(String username);
-    AccountDto selectUser(String username);
+    AccountDto selectAccount(String username);
 }

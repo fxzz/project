@@ -7,5 +7,5 @@ public interface AccountService {
 
     void registerAccounts(AccountDto accountDto);
 
-    Map<String, String> login(AccountDto accountDto);
+    String login(AccountDto accountDto);
 }
