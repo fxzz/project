@@ -13,4 +13,5 @@ public interface PhotoService {
 
     CursorResponse<CursorDto> getPage(Long photoId, int size);
 
+    PhotoDto getDetailsPhoto(Long photoId);
 }

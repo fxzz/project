@@ -8,6 +8,12 @@
         VALUES (#{title}, #{content}, #{nickname}, #{newFilename}, #{filename})
     </insert>
 
+    <select id="selectPhoto" parameterType="Long" resultType="com.example.backend.photo.PhotoDto">
+        SELECT photoId, title, content, nickname, newFilename, filename, createdat
+        FROM photo
+        WHERE photoId = #{photoId}
+    </select>
+
     <select id="selectFirstPage" parameterType="Map" resultType="com.example.backend.photo.cursor.CursorDto">
         SELECT photoId, title, content, nickname, newFilename, filename, createdat
         FROM photo

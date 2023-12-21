@@ -52,6 +52,11 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
 
+    @Transactional(readOnly = true)
+    @Override
+    public PhotoDto getDetailsPhoto(Long photoId) {
+        return photoMapper.selectPhoto(photoId);
+    }
 
 
     @Transactional(readOnly = true)

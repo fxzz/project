@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -33,7 +34,7 @@ public class PhotoController {
     private String uploadPath;
 
 
-    // /photos/{id} 변경해야함
+
     @PostMapping("/photos")
     public CommonResponse registerPhotos(@Valid PhotoDto.RegisterPhotoRequest request, @AuthenticationPrincipal AccountDetails accountDetails) {
         photoService.registerPhotos(request, uploadPath, accountDetails.getNickname());
@@ -46,8 +47,14 @@ public class PhotoController {
         return CommonResponse.success(page);
     }
 
-    @GetMapping("/photos/{newFilename}")
-    public ResponseEntity<Resource> listImage(@PathVariable String newFilename) {
+    @GetMapping(value = "/photos/{photo-id}")
+    public CommonResponse getDetailsPhoto(@PathVariable("photo-id") Long photoId) {
+            PhotoDto photoDto = photoService.getDetailsPhoto(photoId);
+        return CommonResponse.success(photoDto);
+    }
+
+    @GetMapping(value = "/file/{new-filename}")
+    public ResponseEntity<Resource> listImage(@PathVariable("new-filename") String newFilename) {
         Resource resource = new FileSystemResource(uploadPath + newFilename);
         return new ResponseEntity<>(resource, HttpStatus.OK);
     }

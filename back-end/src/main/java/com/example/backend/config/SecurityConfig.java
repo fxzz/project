@@ -62,7 +62,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
-                                .requestMatchers("/api/", "/api/login", "/api/users", "/api/photos/**").permitAll() //TODO 나중에 추가
+                                .requestMatchers("/api/", "/api/login", "/api/users", "/api/photos/**", "/api/file/**").permitAll() //TODO 나중에 추가
                                 .requestMatchers("/error/**").permitAll()
                                 .requestMatchers("/favicon.ico").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/photos").authenticated()
