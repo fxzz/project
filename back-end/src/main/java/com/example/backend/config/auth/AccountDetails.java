@@ -29,6 +29,10 @@ public class AccountDetails implements UserDetails {
         return collector;
     }
 
+    public Long getAccountId() {
+        return account.getAccountId();
+    }
+
     @Override
     public String getPassword() {
         return account.getPassword();

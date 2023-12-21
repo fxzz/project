@@ -33,7 +33,7 @@ public class PhotoController {
     private String uploadPath;
 
 
-
+    // /photos/{id} 변경해야함
     @PostMapping("/photos")
     public CommonResponse registerPhotos(@Valid PhotoDto.RegisterPhotoRequest request, @AuthenticationPrincipal AccountDetails accountDetails) {
         photoService.registerPhotos(request, uploadPath, accountDetails.getNickname());

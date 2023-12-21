@@ -5,6 +5,7 @@ import com.example.backend.common.exception.NotFoundException;
 
 import com.example.backend.config.auth.AccountDetails;
 import com.example.backend.config.jwt.JwtProvider;
+import com.example.backend.config.jwt.JwtTokenDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 
 
 @Slf4j
@@ -36,13 +38,16 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public  String login(AccountDto accountDto) {
+    public  JwtTokenDto login(AccountDto accountDto) {
         try {
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
                     = new UsernamePasswordAuthenticationToken(accountDto.getUsername(), accountDto.getPassword());
             Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
             AccountDetails accountDetails = (AccountDetails) authentication.getPrincipal();
-            return JwtProvider.create(accountDetails.getAccount());
+            String JwtToken = JwtProvider.create(accountDetails.getAccount());
+            Long accountId = accountDetails.getAccountId();
+
+            return new JwtTokenDto(JwtToken, accountId);
         }catch (Exception e) {
             throw new NotFoundException();
         }
