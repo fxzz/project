@@ -48,7 +48,7 @@ const PhotoForm = () => {
         .post("http://localhost:8080/api/photos", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `${accessToken}`,
           },
         })
         .then(() => {
