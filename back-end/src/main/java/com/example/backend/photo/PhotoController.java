@@ -47,13 +47,13 @@ public class PhotoController {
         return CommonResponse.success(page);
     }
 
-    @GetMapping(value = "/photos/{photo-id}")
+    @GetMapping("/photos/{photo-id}")
     public CommonResponse getDetailsPhoto(@PathVariable("photo-id") Long photoId) {
             PhotoDto photoDto = photoService.getDetailsPhoto(photoId);
         return CommonResponse.success(photoDto);
     }
 
-    @GetMapping(value = "/file/{new-filename}")
+    @GetMapping("/file/{new-filename}")
     public ResponseEntity<Resource> listImage(@PathVariable("new-filename") String newFilename) {
         Resource resource = new FileSystemResource(uploadPath + newFilename);
         return new ResponseEntity<>(resource, HttpStatus.OK);
