@@ -21,8 +21,10 @@ const Login = () => {
     axios
       .post("http://localhost:8080/api/login", formData)
       .then((response) => {
-        const accessToken = response.data.data;
+        const accessToken = response.data.data.jwtToken;
+        const accountId = response.data.data.accountId;
         localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("accountId", accountId);
         history.push("/MyPage");
       })
       .catch((error) => {});
