@@ -39,6 +39,10 @@ public class AccountDetails implements UserDetails {
         return account.getUsername();
     }
 
+    public String getNickname() {
+        return account.getNickname();
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

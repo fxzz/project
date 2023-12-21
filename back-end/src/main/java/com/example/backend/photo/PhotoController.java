@@ -36,10 +36,7 @@ public class PhotoController {
 
     @PostMapping("/photos")
     public CommonResponse registerPhotos(@Valid PhotoDto.RegisterPhotoRequest request, @AuthenticationPrincipal AccountDetails accountDetails) {
-        photoService.registerPhotos(request, uploadPath);
-        System.out.println(accountDetails.getAccount().getAccountId() + " " + accountDetails.getAccount().getNickname()
-        +" "+ accountDetails.getAccount().getRole())
-        ;
+        photoService.registerPhotos(request, uploadPath, accountDetails.getNickname());
         return CommonResponse.success("OK");
     }
 

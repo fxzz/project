@@ -35,8 +35,8 @@ public class PhotoDto {
     }
 
 
-    public static PhotoDto of(String title, String content, String newFilename, String filename) {
-        return new PhotoDto(title, content, getName(), newFilename, filename);
+    public static PhotoDto of(String title, String content, String nickname, String newFilename, String filename) {
+        return new PhotoDto(title, content, nickname, newFilename, filename);
     }
 
     private static String getName() {

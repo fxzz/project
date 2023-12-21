@@ -29,7 +29,7 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Transactional
     @Override
-    public void registerPhotos(PhotoDto.RegisterPhotoRequest request, String uploadPath) {
+    public void registerPhotos(PhotoDto.RegisterPhotoRequest request, String uploadPath, String nickname) {
 
 
         String originalFilename = request.getOriginalFilename();
@@ -46,7 +46,7 @@ public class PhotoServiceImpl implements PhotoService {
                     log.error("Error transferring image:", e);
                     throw new UploadException("업로드 중에 오류가 발생했습니다. 다시 시도해주세요.");
                 }
-                var photoDto= PhotoDto.of(request.getTitle(), request.getContent(), newFilename, originalFilename);
+                var photoDto= PhotoDto.of(request.getTitle(), request.getContent(),nickname ,newFilename, originalFilename);
                 photoMapper.insertPhoto(photoDto);
         }
     }
