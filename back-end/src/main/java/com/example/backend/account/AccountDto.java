@@ -23,9 +23,22 @@ public class AccountDto {
     private Role role;
     private LocalDateTime createdAt;
 
+    public AccountDto() {
+    }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    private AccountDto(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public AccountDto(Long accountId, String role, String nickname) {
+        this.accountId = accountId;
+        this.role = Role.valueOf(role);
+        this.nickname = nickname;
     }
 
     private AccountDto(String username, String password, String email, String nickname, Role role) {
@@ -43,6 +56,10 @@ public class AccountDto {
 
     public static AccountDto of(RegisterAccountRequest request) {
         return new AccountDto(request.getUsername(), request.getPassword(), request.getEmail(), request.getUsername(), Role.USER);
+    }
+
+    public static AccountDto of(LoginAccountRequest request) {
+        return new AccountDto(request.getUsername(), request.getPassword());
     }
 
     @Getter
@@ -65,5 +82,13 @@ public class AccountDto {
         @Email(message = "이메일은 필수입니다.")
         @NotBlank(message = "이메일은 필수입니다.")
         private String email;
+    }
+
+    @Getter
+    @Setter
+    @ToString
+    public static class LoginAccountRequest {
+        private String username;
+        private String password;
     }
 }

@@ -8,6 +8,14 @@
         VALUES (#{username}, #{password}, #{email}, #{nickname}, #{role})
     </insert>
 
+    <select id="selectAccount" parameterType="String" resultType="com.example.backend.account.AccountDto">
+        SELECT accountId, username, password, email, nickname, role FROM account WHERE username = #{username}
+    </select>
+
+    <select id="selectUsername" parameterType="String" resultType="com.example.backend.account.AccountDto">
+        SELECT username, password FROM account WHERE username = #{username}
+    </select>
+
     <select id="selectUsernameCount" parameterType="String" resultType="Integer">
         SELECT COUNT(*) FROM account WHERE username = #{username}
     </select>

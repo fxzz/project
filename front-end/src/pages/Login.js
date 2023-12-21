@@ -16,7 +16,7 @@ const Login = () => {
 
     // const accessToken = localStorage.getItem("accessToken");
     //    headers: {
-    //     Authorization: `Bearer ${accessToken}`,
+    //     Authorization: `${accessToken}`,
     // },
     axios
       .post("http://localhost:8080/api/login", formData)
