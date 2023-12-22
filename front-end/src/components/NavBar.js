@@ -23,9 +23,9 @@ const NavBar = () => {
         <li className="nav-item">
           <Link
             className="btn btn-outline-info border border-white bg-white"
-            to="#"
+            to="/Chat"
           >
-            Diary
+            Talk
           </Link>
         </li>
         <li className="nav-item">

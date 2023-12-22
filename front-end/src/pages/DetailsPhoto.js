@@ -1,8 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 const DetailsPhoto = () => {
+  const history = useHistory();
   const { photoId } = useParams();
   const [id, setPhotoId] = useState("");
   const [title, setTitle] = useState("");
@@ -30,6 +32,10 @@ const DetailsPhoto = () => {
 
     fetchData();
   }, [photoId]);
+
+  const handleChatButtonClick = () => {
+    history.push("/chat", { nickname, title });
+  };
 
   return (
     <>
@@ -65,7 +71,11 @@ const DetailsPhoto = () => {
             <div className="mt-5"></div>
             <hr />
             <div className="d-flex">
-              <button type="button" className="btn btn-dark rounded-0 ms-1">
+              <button
+                type="button"
+                className="btn btn-dark rounded-0 ms-1"
+                onClick={handleChatButtonClick}
+              >
                 <i className="bi bi-chat-dots "></i> 채팅
               </button>
 

@@ -50,14 +50,10 @@ const MyPage = () => {
           </div>
         </div>
         <div id="buttonPage">
-          <div>
-            <Link className="myPageLink">내가 쓴 글</Link>
-          </div>
           <div className="mt-4">
-            <Link className="myPageLink">채팅 리스트</Link>
-          </div>
-          <div className="mt-4">
-            <Link className="myPageLink">설정</Link>
+            <Link className="myPageLink" to="#">
+              설정
+            </Link>
           </div>
         </div>
       </div>

@@ -11,6 +11,7 @@ import CusPhoto from "./pages/CusPhoto";
 import Login from "./pages/Login";
 import MyPage from "./pages/MyPage";
 import DetailsPhoto from "./pages/DetailsPhoto";
+import Chat from "./pages/Chat";
 
 function App() {
   return (
@@ -35,6 +36,9 @@ function App() {
           </Route>
           <Route path="/MyPage" exact>
             <MyPage />
+          </Route>
+          <Route path="/Chat" exact>
+            <Chat />
           </Route>
           <Route path="/photos/:photoId" exact>
             <DetailsPhoto />
