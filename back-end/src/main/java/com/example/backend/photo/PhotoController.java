@@ -1,5 +1,6 @@
 package com.example.backend.photo;
 
+import com.example.backend.common.exception.NotFoundException;
 import com.example.backend.common.response.CommonResponse;
 
 
@@ -49,7 +50,12 @@ public class PhotoController {
 
     @GetMapping("/photos/{photo-id}")
     public CommonResponse getDetailsPhoto(@PathVariable("photo-id") Long photoId) {
+
             PhotoDto photoDto = photoService.getDetailsPhoto(photoId);
+
+            if (photoDto == null) {
+                throw new NotFoundException(); // 에러 고민
+            }
         return CommonResponse.success(photoDto);
     }
 

@@ -2,6 +2,7 @@ package com.example.backend.config.auth;
 
 import com.example.backend.account.AccountDto;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -14,6 +15,7 @@ import java.util.Collection;
 
 @Setter
 @Getter
+@NoArgsConstructor
 public class AccountDetails implements UserDetails {
 
     private AccountDto account;
