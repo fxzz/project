@@ -66,4 +66,39 @@
 | -------- |
 | ![ezgif com-video-to-gif-converted](https://github.com/fxzz/sns/assets/3148006/e8b3745f-a328-4e4a-bdb0-34e0ed84bae1)  | 
 
+<br>
+
+### [회원가입]
+- 유효성 검사
+
+| 회원가입 - 실패 | 
+| -------- |
+|  ![ezgif com-video-to-gif-converter](https://github.com/fxzz/sns/assets/3148006/65c535df-97c8-40da-b4e2-5eddf7f8b1ab) | 
+
+<br>
+
+### [Photo - 상세보기]
+
+
+| 상세보기 - 성공 | 
+| -------- |
+|  ![상세](https://github.com/fxzz/sns/assets/3148006/3fded14c-b4ea-40b9-b8e0-088c6a1ee112) | 
+
+<br>
+
+### [Photo - 채팅]
+
+
+| 채팅 - 성공 | 
+| -------- |
+|  ![hh](https://github.com/fxzz/sns/assets/3148006/79d33303-3525-47e8-ad65-afcb55a89ea8) | 
+
+
+<br>
+
+### [마이페이지]
+
+| 닉네임 변경 - 실패 | 
+| -------- |
+| ![ezgif com-video-to-gif-converter (1)](https://github.com/fxzz/sns/assets/3148006/3cef6900-bf6c-40da-9760-bae6854daa7c) | 
 
