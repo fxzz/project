@@ -16,6 +16,7 @@ const PhotoForm = () => {
   const [validationContent, setValidationContent] = useState(null);
   const [validationImage, setValidationImage] = useState(null);
 
+  const accessToken = localStorage.getItem("accessToken");
   const handleShow = () => {
     if (!accessToken) {
       history.push("/Login");
@@ -23,7 +24,7 @@ const PhotoForm = () => {
       setShowModal(true);
     }
   };
-  const handleClose = () => window.location.replace("/photo");
+  const handleClose = () => window.location.reload();
   const handleImage = (e) => {
     setImage(e.target.files[0]);
   };
@@ -32,7 +33,6 @@ const PhotoForm = () => {
     setCaptchaValue(value || "");
   };
 
-  const accessToken = localStorage.getItem("accessToken");
   const history = useHistory();
 
   const onSubmit = () => {
@@ -52,7 +52,8 @@ const PhotoForm = () => {
           },
         })
         .then(() => {
-          window.location.replace("/photo");
+          console.log("Photo uploaded successfully");
+          handleClose();
         })
         .catch((error) => {
           if (error.response) {

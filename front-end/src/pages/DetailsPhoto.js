@@ -9,7 +9,7 @@ const DetailsPhoto = () => {
   const [id, setPhotoId] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [nickname, setNickname] = useState("");
+  const [accountId, setAccountId] = useState("");
   const [newFilename, setNewFilename] = useState("");
   const [createdAt, setCreatedAt] = useState("");
   useEffect(() => {
@@ -18,11 +18,11 @@ const DetailsPhoto = () => {
         const response = await axios.get(
           `http://localhost:8080/api/photos/${photoId}`
         );
-
+        console.log(response.data.data);
         setPhotoId(response.data.data.photoId);
         setTitle(response.data.data.title);
         setContent(response.data.data.content);
-        setNickname(response.data.data.nickname);
+        setAccountId(response.data.data.accountId);
         setNewFilename(response.data.data.newFilename);
         setCreatedAt(response.data.data.createdAt);
       } catch (error) {
@@ -34,7 +34,7 @@ const DetailsPhoto = () => {
   }, [photoId]);
 
   const handleChatButtonClick = () => {
-    history.push("/chat", { nickname, title });
+    history.push("/chat", { accountId, title, newFilename });
   };
 
   return (
@@ -66,7 +66,7 @@ const DetailsPhoto = () => {
               <div>{content}</div>
             </div>
             <div className="mt-5">
-              <div className="d-flex">{nickname}</div>
+              <div className="d-flex">{accountId}</div>
             </div>
             <div className="mt-5"></div>
             <hr />

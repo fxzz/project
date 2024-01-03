@@ -2,14 +2,63 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
+import axios from "axios";
+import ChatRoom from "../components/ChatRoom";
 
 const Chat = () => {
   const location = useLocation();
-  const { nickname = "", title = "" } = location.state || {};
-  const accessToken = localStorage.getItem("accessToken");
+  const { accountId = "", title = "", newFilename = "" } = location.state || {};
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
   const [stompClient, setStompClient] = useState(null);
+
+  const [chatRoomRes, setChatRoomRes] = useState("");
+
+  const [chatRoomName, setChatRoomName] = useState(
+    `${newFilename}_${accountId}`
+  );
+
+  const senderAccountId = localStorage.getItem("accountId");
+  const accessToken = localStorage.getItem("accessToken");
+
+  const getChatRoomName = (name) => {
+    setChatRoomName(name);
+    console.log(chatRoomName);
+  };
+
+  const submitButton = () => {
+    sendMessage();
+
+    if (chatRoomRes === "OK") {
+      console.log("ok에 걸림");
+      return;
+    }
+
+    console.log("ok에 안걸림");
+    createChatRoom();
+  };
+
+  const createChatRoom = async () => {
+    const chatRoomDto = {
+      roomName: chatRoomName,
+      senderAccountId: senderAccountId,
+      accountId: accountId,
+      title: title,
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/chat-rooms",
+        chatRoomDto,
+        {
+          headers: {
+            Authorization: `${accessToken}`,
+          },
+        }
+      );
+      setChatRoomRes(response.data.data);
+    } catch (error) {}
+  };
 
   const connectStomp = () => {
     const socket = new SockJS("http://localhost:8080/ws");
@@ -19,10 +68,10 @@ const Chat = () => {
       {},
       () => {
         console.log("STOMP 연결 성공");
-        stompClient.subscribe(`/queue/chat/1`, (chatDto) => {
+        stompClient.subscribe(`/queue/chat/${chatRoomName}`, (chatDto) => {
           const chat = JSON.parse(chatDto.body);
-          const message = chat.message;
-          console.log(chat);
+          const message = `${chat.sender}: ${chat.message}`; //나중에 닉네임으로 통신해서 가져와야함
+          console.log(chat.sender);
           setMessages((prevMessages) => [...prevMessages, message]);
         });
       },
@@ -39,19 +88,24 @@ const Chat = () => {
       if (stompClient && stompClient.connected) {
         stompClient.disconnect();
       }
+      setMessages([]);
     };
-  }, []);
+  }, [chatRoomName]);
 
   const sendMessage = () => {
     if (messageInput === "") {
       return;
     }
     const chatDto = {
-      sender: "dd",
+      sender: senderAccountId,
       message: messageInput,
     };
 
-    stompClient.send(`/app/chat/message/1`, {}, JSON.stringify(chatDto));
+    stompClient.send(
+      `/app/chat/message/${chatRoomName}`,
+      {},
+      JSON.stringify(chatDto)
+    );
     setMessageInput("");
   };
 
@@ -61,18 +115,23 @@ const Chat = () => {
 
   return (
     <div>
-      <div class="row mt-5">
-        <div class="col-3">col</div>
-        <div class="col-3">col</div>
-        <div class="col-3">
-          <div>사용자 이름 {nickname && <div>Nickname: {nickname}</div>}</div>
-          <div className="mt-1"> 제목 {title && <div>Title: {title}</div>}</div>
+      <div className="row mt-5">
+        <div className="col-3"></div>
+        <div className="col-3">
+          <ChatRoom
+            senderAccountId={senderAccountId}
+            accessToken={accessToken}
+            getChatRoomName={getChatRoomName}
+          />
+        </div>
+        <div className="col-3">
           <hr />
           <div>
             {messages.map((msg, index) => (
               <div key={index}>{msg}</div>
             ))}
           </div>
+
           <div>
             <input
               type="text"
@@ -80,13 +139,16 @@ const Chat = () => {
               onChange={onChangeMessage}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  sendMessage();
+                  submitButton();
                 }
               }}
             />
+            <button onClick={submitButton} className="btn btn-primary">
+              버튼
+            </button>
           </div>
         </div>
-        <div class="col-3">col</div>
+        <div className="col-3"></div>
       </div>
     </div>
   );

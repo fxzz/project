@@ -1,10 +1,9 @@
 import { useHistory } from "react-router-dom";
 import { useEffect, useState } from "react";
-import PhotoForm from "../components/PhotoForm";
+import PhotoForm from "./PhotoForm";
 import axios from "axios";
 
-const CusPhoto = ({ photo }) => {
-  const accessToken = localStorage.getItem("accessToken");
+const CusPhoto = () => {
   const [photoData, setPhotoData] = useState([]);
   const [error, setError] = useState(null);
   const [nextCursorRequest, setNextCursorRequest] = useState(null);
@@ -35,17 +34,19 @@ const CusPhoto = ({ photo }) => {
           const uniqueData = response.data.data.content.filter(
             (newPhoto) =>
               // 현재 데이터에 존재하지 않는 경우만 필터링합니다.
+
               !prevData.some(
                 (prevPhoto) => prevPhoto.photoId === newPhoto.photoId
               )
           );
           // 현재 데이터와 새로운 데이터를 합쳐서 반환합니다.
+
           return [...prevData, ...uniqueData];
         });
 
         setNextCursorRequest(response.data.data.nextCursorRequest);
       } else {
-        setError("Invalid response structure");
+        setError("error");
       }
     } catch (error) {
       setError(error.message);
@@ -86,7 +87,7 @@ const CusPhoto = ({ photo }) => {
                   <div
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <span>{photo.nickname}</span>
+                    <span>{photo.accountId}</span>
                     <span>
                       <span style={{ marginRight: "10px" }}>
                         <i className="bi bi-chat-dots ">0</i>

@@ -6,7 +6,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import SignUp from "./pages/SignUp";
 import Footer from "./components/Footer";
 
-import PhotoForm from "./components/PhotoForm";
+import PhotoForm from "./pages/PhotoForm";
 import CusPhoto from "./pages/CusPhoto";
 import Login from "./pages/Login";
 import MyPage from "./pages/MyPage";
