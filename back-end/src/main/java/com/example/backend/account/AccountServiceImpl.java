@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -24,7 +25,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
-    private final AccountMapper accountService;
+    private final AccountMapper accountMapper;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
@@ -34,7 +35,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void registerAccounts(AccountDto accountDto) {
         accountDto.setPassword(passwordEncoder.encode(accountDto.getPassword()));
-        accountService.insertAccount(accountDto);
+        accountMapper.insertAccount(accountDto);
     }
 
     @Override
@@ -52,5 +53,19 @@ public class AccountServiceImpl implements AccountService {
             throw new NotFoundException();
         }
 
+    }
+
+    @Override
+    public void changeNickname(Long accountId, String nickname) {
+        HashMap map = new HashMap();
+        map.put("accountId", accountId);
+        map.put("nickname", nickname);
+
+        accountMapper.updateNickname(map);
+    }
+
+    @Override
+    public String getNickname(Long accountId) {
+        return accountMapper.getNickname(accountId);
     }
 }

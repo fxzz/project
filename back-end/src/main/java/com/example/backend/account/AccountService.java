@@ -10,4 +10,8 @@ public interface AccountService {
     void registerAccounts(AccountDto accountDto);
 
     JwtTokenDto login(AccountDto accountDto);
+
+    void changeNickname(Long accountId, String nickname);
+
+    String getNickname(Long accountId);
 }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.backend.chat.ChatRoomMapper">
+
+    <insert id="insertChatRoom" parameterType="com.example.backend.chat.ChatRoomDto">
+        INSERT INTO chatroom ( senderAccountId, accountId, roomName, title)
+        VALUES ( #{senderAccountId}, #{accountId}, #{roomName}, #{title})
+    </insert>
+
+    <select id="existsChatRoom" parameterType="String" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM chatroom
+        WHERE roomName = #{roomName}
+    </select>
+
+    <select id="selectChatRoom" parameterType="Long" resultType="com.example.backend.chat.ChatRoomDto">
+        SELECT * FROM chatroom
+        WHERE senderAccountId = #{accountId} OR accountId = #{accountId};
+    </select>
+
+</mapper>

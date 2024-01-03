@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,35 +14,34 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 
 
+@NoArgsConstructor
 @Getter
 public class PhotoDto {
 
     private Long photoId;
     private String title;
     private String content;
-    private String nickname;
+    private Long accountId;
     private String newFilename;
     private String filename;
     private LocalDateTime createdAt;
 
 
 
-    private PhotoDto(String title, String content, String nickname, String newFilename, String filename) {
+    private PhotoDto(String title, String content, Long accountId, String newFilename, String filename) {
         this.title = title;
         this.content = content;
-        this.nickname = nickname;
+        this.accountId = accountId;
         this.newFilename = newFilename;
         this.filename = filename;
     }
 
 
-    public static PhotoDto of(String title, String content, String nickname, String newFilename, String filename) {
-        return new PhotoDto(title, content, nickname, newFilename, filename);
+    public static PhotoDto of(String title, String content, Long accountId, String newFilename, String filename) {
+        return new PhotoDto(title, content, accountId, newFilename, filename);
     }
 
-    private static String getName() {
-        return "익명";
-    }
+
 
 
 

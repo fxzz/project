@@ -8,7 +8,7 @@ import com.example.backend.photo.cursor.CursorResponse;
 
 
 public interface PhotoService {
-    void registerPhotos(PhotoDto.RegisterPhotoRequest request, String uploadPath, String nickname);
+    void registerPhotos(PhotoDto.RegisterPhotoRequest request, String uploadPath, Long accountId);
 
 
     CursorResponse<CursorDto> getPage(Long photoId, int size);

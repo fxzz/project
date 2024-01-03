@@ -1,6 +1,7 @@
 package com.example.backend.account;
 
 import com.example.backend.account.validator.UniqueEmail;
+import com.example.backend.account.validator.UniqueNickname;
 import com.example.backend.account.validator.UniqueUsername;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -90,5 +91,14 @@ public class AccountDto {
     public static class LoginAccountRequest {
         private String username;
         private String password;
+    }
+
+    @Getter
+    @Setter
+    @ToString
+    public static class NickNameChangeRequest {
+        @UniqueNickname
+        @NotBlank(message = "닉네임은 필수입니다.")
+        private String nickname;
     }
 }

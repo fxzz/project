@@ -9,7 +9,7 @@ public class CursorDto {
    private Long photoId;
    private String title;
    private String content;
-   private String nickname;
+   private Long accountId;
    private String newFilename;
    private String filename;
 

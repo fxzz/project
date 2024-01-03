@@ -3,6 +3,17 @@
 
 <mapper namespace="com.example.backend.account.AccountMapper">
 
+    <update id="updateNickname" parameterType="Map">
+        update account
+        set nickname = #{nickname}
+        WHERE accountId = #{accountId}
+    </update>
+
+    <select id="getNickname" parameterType="Long" resultType="String">
+        select nickname from account
+        WHERE accountId = #{accountId}
+    </select>
+
     <insert id="insertAccount" parameterType="com.example.backend.account.AccountDto">
         INSERT INTO account (username, password, email, nickname, role)
         VALUES (#{username}, #{password}, #{email}, #{nickname}, #{role})

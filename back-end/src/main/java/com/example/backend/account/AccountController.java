@@ -40,9 +40,20 @@ public class AccountController {
         if (accountId.longValue() != accountDetails.getAccount().getAccountId()) {
             throw new RuntimeException("권한이 없습니다"); // 403 관련 에러 만들어야함
         }
-        System.out.println("체크");
-        var nickname = accountDetails.getNickname();
+        var nickname = accountService.getNickname(accountId);
         return CommonResponse.success(nickname);
+    }
+
+    @PatchMapping("/users/{accountId}")
+    public CommonResponse changeNickname(@PathVariable Long accountId, @AuthenticationPrincipal AccountDetails accountDetails
+            , @Valid @RequestBody AccountDto.NickNameChangeRequest request) {
+        if (accountId.longValue() != accountDetails.getAccount().getAccountId()) {
+            throw new RuntimeException("권한이 없습니다"); // 403 관련 에러 만들어야함
+        }
+
+        accountService.changeNickname(accountId, request.getNickname());
+
+        return CommonResponse.success("OK");
     }
 
 }

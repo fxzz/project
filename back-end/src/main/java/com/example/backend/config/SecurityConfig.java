@@ -65,7 +65,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/", "/api/login", "/api/users", "/api/photos/**", "/api/file/**", "/chat/**", "/ws/**").permitAll() //TODO 나중에 추가
                                 .requestMatchers("/error/**").permitAll()
                                 .requestMatchers("/favicon.ico").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/api/photos").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/api/photos", "/api/chat-rooms").authenticated()
                                 .anyRequest().authenticated())
 
                 .httpBasic(HttpBasicConfigurer::disable)

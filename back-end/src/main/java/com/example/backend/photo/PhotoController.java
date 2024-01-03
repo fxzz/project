@@ -38,13 +38,15 @@ public class PhotoController {
 
     @PostMapping("/photos")
     public CommonResponse registerPhotos(@Valid PhotoDto.RegisterPhotoRequest request, @AuthenticationPrincipal AccountDetails accountDetails) {
-        photoService.registerPhotos(request, uploadPath, accountDetails.getNickname());
+
+        photoService.registerPhotos(request, uploadPath, accountDetails.getAccountId());
         return CommonResponse.success("OK");
     }
 
     @GetMapping("/photos")
     public CommonResponse<CursorResponse<CursorDto>> getPhotoPage(@RequestParam(required = false) Long photoId, int size) {
         CursorResponse<CursorDto> page = photoService.getPage(photoId, size);
+
         return CommonResponse.success(page);
     }
 
